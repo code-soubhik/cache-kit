@@ -1,6 +1,8 @@
 # ⚡ cache-kit
 
-> A simple caching layer for `fetch` requests — supports memory, browser (localStorage), and Node.js (filesystem) adapters with smart strategies.
+> A smart caching layer for `fetch` requests — supports memory, browser (localStorage), and Node.js (filesystem) with modern caching strategies.
+
+---
 
 ## 📦 Installation
 
@@ -8,53 +10,108 @@
 npm install cache-kit
 ```
 
+Or use it directly in the browser via CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/cache-kit@1.1.2/cdn/cache-kit.min.js"></script>
+```
+
+---
+
 ## ✨ Features
 
-- 🌐 **Supports only GET requests** (for now)
+- 🌐 **Only supports GET requests** (for now)
 - 📁 **Adapters**:
-  - `memory`: In-memory Map cache
+  - `memory`: In-memory (Node/React/Next.js)
   - `browser`: Uses `localStorage`
-  - `node`: File-based caching in `.cache/`
+  - `node`: Filesystem caching in `.cache/`
 - 🧠 **Strategies**:
-  - `cache-first`: Return fresh cache if available, else fetch
-  - `network-first`: Try network first, fallback to cache if failed
-  - `stale-while-revalidate`: Return stale cache instantly and update in background
-- 🕒 **Revalidate** time in seconds (TTL-like behavior)
+  - `cache-first`: Serve cache if available, fetch if not
+  - `network-first`: Try network first, fallback to cache on failure
+  - `stale-while-revalidate`: Serve stale cache immediately, fetch and update in background
+- 🕒 **TTL support**: Set revalidation interval in seconds
+- 🧩 **Core logic in**: `cacheManager.ts`
 
-## 📌 Usage
+---
+
+## 📌 Quick Usage
+
+### Node.js
 
 ```ts
 import { cachedFetch } from 'cache-kit';
 
-const res = await cachedFetch('https://api.example.com/data',
-  { method: 'GET' },
-  {
-    revalidate: 60,
-    strategy: 'stale-while-revalidate',
-    adapter: 'browser'
-  }
-);
+(async () => {
+  const res = await cachedFetch('https://api.example.com/data',
+    { method: 'GET' },
+    {
+      adapter: 'node',
+      strategy: 'cache-first',
+      revalidate: 300
+    }
+  );
 
-const data = await res.json();
+  const data = await res.json();
+  console.log(data);
+})();
 ```
 
-## 🔧 Options
+### React / Next.js
+
+```ts
+useEffect(() => {
+  (async () => {
+    const res = await cachedFetch('/api/user', { method: 'GET' }, {
+      adapter: 'browser',
+      strategy: 'stale-while-revalidate',
+      revalidate: 60
+    });
+    const data = await res.json();
+    setData(data);
+  })();
+}, []);
+```
+
+### Vanilla Browser (via CDN)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/cache-kit@1.1.2/cdn/cache-kit.min.js"></script>
+<script>
+  (async () => {
+    const res = await window.cacheKit.cachedFetch('https://api.example.com/data',
+      { method: 'GET' },
+      {
+        adapter: 'browser',
+        strategy: 'network-first',
+        revalidate: 60
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+  })();
+</script>
+```
+
+---
+
+## 🔧 API
 
 ### `cachedFetch(url, options, cacheOptions)`
 
 #### `options: RequestInit`
-- Only `method: 'GET'` is supported
-- No `body` support in Phase 1
+- Only `method: 'GET'` is supported.
 
 #### `cacheOptions: CacheProps`
 
-| Property    | Type                | Description                                          |
-|-------------|---------------------|------------------------------------------------------|
-| `revalidate`| `number`            | Cache TTL in seconds                                 |
-| `strategy`  | `'cache-first'` \| `'network-first'` \| `'stale-while-revalidate'` | Strategy to use |
-| `adapter`   | `'memory'` \| `'browser'` \| `'node'`     | Where to store cache                                 |
+| Property     | Type                                                   | Description                    |
+|--------------|--------------------------------------------------------|--------------------------------|
+| `revalidate` | `number`                                               | TTL (cache expiry in seconds) |
+| `strategy`   | `'cache-first'` \| `'network-first'` \| `'stale-while-revalidate'` | Caching strategy              |
+| `adapter`    | `'memory'` \| `'browser'` \| `'node'`                  | Cache storage backend         |
 
-## 📁 Directory Structure (Simplified)
+---
+
+## 📁 Project Structure (Simplified)
 
 ```
 cache-kit/
@@ -63,19 +120,31 @@ cache-kit/
 │   ├── memory.ts
 │   └── node.ts
 ├── utils/
-│   └── common.util.ts
+│   ├── common.util.ts
 │   └── cache.util.ts
-├── types.ts
+├── cacheManager.ts
 ├── index.ts
+├── types.ts
 ```
+
+---
 
 ## 🚧 Future Scope
 
-- [ ] Support non-GET requests
-- [ ] Automatic cache invalidation
+- [ ] Add support for non-GET methods (`POST`, `PUT`, etc.)
+- [ ] Automatic cache invalidation on triggers
 - [ ] Custom cache key generator
-- [ ] TypeScript improvements
+- [ ] More storage backends (e.g., IndexedDB)
+- [ ] Tag-based cache invalidation
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues, submit pull requests, or suggest enhancements.
+
+---
 
 ## 📄 License
 
-MIT
+MIT — free to use.
