@@ -1,43 +1,8 @@
 import { cacheDataType, CacheProps } from '../types';
-import { getExpiryTimeCacheKey } from "../utils/common";
+import { BrowserMemory } from '../utils/cache.util';
+import { getExpiryTimeCacheKey } from "../utils/common.util";
 
-const BrowserMemory = {
-    set: async function (key: string, data: cacheDataType): Promise<void> {
-        const text = await data.response.clone().text();
-        const resData = {
-            responseBody: text,
-            expiredAt: data.expiredAt,
-            headers: Object.fromEntries(data.response.headers.entries()),
-            status: data.response.status,
-            statusText: data.response.statusText,
-        };
-        window.localStorage.setItem(key, JSON.stringify(resData));
-    },
-    get: function (key: string) {
-        const raw = localStorage.getItem(key);
-        if (!raw) return null;
-
-        try {
-            const parsed = JSON.parse(raw);
-            const { responseBody, expiredAt, headers, status, statusText } = parsed;
-            return {
-                expiredAt,
-                response: new Response(responseBody, {
-                    headers,
-                    status,
-                    statusText,
-                }),
-            };
-        } catch {
-            return null;
-        }
-    },
-    has: function (key: string) {
-        return localStorage.getItem(key) !== null;
-    }
-}
-
-export const browserCachedFetch = async (
+const browserCachedFetch = async (
     normalizedUrl: string,
     options: RequestInit,
     cacheOptions: CacheProps
@@ -99,3 +64,5 @@ export const browserCachedFetch = async (
 
     return response;
 }
+
+export default browserCachedFetch;

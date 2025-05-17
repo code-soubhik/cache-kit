@@ -1,35 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-
 import { cacheDataType, CacheProps } from '../types';
-import { getExpiryTimeCacheKey } from "../utils/common";
+import { getExpiryTimeCacheKey } from "../utils/common.util";
+import { FileMemory } from '../utils/cache.util';
 
-const FileMemory = {
-    set: function (key: string, data: cacheDataType): void{
-        const filepath = path.resolve("./cache", `${key}.json`);
-        fs.writeFileSync(filepath, JSON.stringify(data)); 
-    },
-    get: function (key: string) {
-        const filepath = path.resolve("./cache", `${key}.json`);
-        const data = fs.readFileSync(filepath, 'utf8');
-        return JSON.parse(data);
-    },
-    has: function (key: string) {
-        const files = fs.readdirSync("./cache");
-        if(files.includes(`${key}.json`)) return true;
-        return false;
-    }
-}
-
-export const nodeCachedFetch = async (
+const nodeCachedFetch = async (
     normalizedUrl: string,
     options: RequestInit,
     cacheOptions: CacheProps
 ): Promise<Response> => {
-
-    // Create a .cache folder if not exists
-    if(!fs.existsSync("cache")) 
-        fs.mkdirSync("cache")
 
     const cacheKey = btoa(normalizedUrl);
 
@@ -88,3 +65,5 @@ export const nodeCachedFetch = async (
 
     return response;
 }
+
+export default nodeCachedFetch;

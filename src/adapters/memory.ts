@@ -1,9 +1,8 @@
 import { cacheDataType, CacheProps } from '../types';
-import { getExpiryTimeCacheKey } from "../utils/common";
+import { cacheMemory } from '../utils/cache.util';
+import { getExpiryTimeCacheKey } from "../utils/common.util";
 
-const cacheMemory: Map<string, cacheDataType> = new Map();
-
-export const memoryCachedFetch = async (
+const memoryCachedFetch = async (
     normalizedUrl: string,
     options: RequestInit,
     cacheOptions: CacheProps
@@ -65,3 +64,5 @@ export const memoryCachedFetch = async (
 
     return response;
 }
+
+export default memoryCachedFetch;
