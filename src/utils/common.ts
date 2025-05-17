@@ -1,9 +1,9 @@
 export const getExpiryTimeCacheKey = (expirySeconds: number | undefined): number => {
 
     if (!expirySeconds)
-        return '::';
+        return Infinity;
 
-    const expiryTime = Date.now() + expirySeconds * 1000;
+    const expiryTime:number = Date.now() + expirySeconds * 1000;
 
-    return `::${expiryTime}`;
+    return expiryTime;
 }

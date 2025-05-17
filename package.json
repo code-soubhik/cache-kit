@@ -1,6 +1,6 @@
 {
   "name": "cache-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,7 @@
   ],
   "author": "code-soubhik",
   "license": "MIT",
-  "description": "",
+  "description": "A simple caching layer for fetch requests — supports memory, browser (localStorage), and Node.js (filesystem) adapters with smart strategies.",
   "devDependencies": {
     "@types/node": "^22.15.18",
     "tsup": "^8.5.0",
