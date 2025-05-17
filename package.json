@@ -1,0 +1,21 @@
+{
+  "name": "call-cache",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "cache"
+  ],
+  "author": "code-soubhik",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  }
+}
