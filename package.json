@@ -1,11 +1,11 @@
 {
-  "name": "call-cache",
+  "name": "cache-kit",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": {
-    "url": "https://github.com/code-soubhik/call-cache"
+    "url": "https://github.com/code-soubhik/cache-kit"
   },
   "scripts": {
     "build": "tsup"

@@ -1,11 +1,11 @@
-# ⚡ call-cache
+# ⚡ cache-kit
 
 > A simple caching layer for `fetch` requests — supports memory, browser (localStorage), and Node.js (filesystem) adapters with smart strategies.
 
 ## 📦 Installation
 
 ```bash
-npm install call-cache
+npm install cache-kit
 ```
 
 ## ✨ Features
@@ -24,7 +24,7 @@ npm install call-cache
 ## 📌 Usage
 
 ```ts
-import { cachedFetch } from 'call-cache';
+import { cachedFetch } from 'cache-kit';
 
 const res = await cachedFetch('https://api.example.com/data',
   { method: 'GET' },
@@ -57,7 +57,7 @@ const data = await res.json();
 ## 📁 Directory Structure (Simplified)
 
 ```
-call-cache/
+cache-kit/
 ├── adapters/
 │   ├── browser.ts
 │   ├── memory.ts
