@@ -63,7 +63,8 @@ cache-kit/
 │   ├── memory.ts
 │   └── node.ts
 ├── utils/
-│   └── common.ts
+│   └── common.util.ts
+│   └── cache.util.ts
 ├── types.ts
 ├── index.ts
 ```
