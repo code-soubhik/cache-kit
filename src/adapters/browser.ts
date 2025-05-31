@@ -1,6 +1,6 @@
 import { cacheDataType, CacheProps } from '../types';
 import { BrowserMemory } from '../utils/cache.util';
-import { getExpiryTimeCacheKey } from "../utils/common.util";
+import { getExpiryTimeCacheKey } from '../utils/common.util';
 
 const browserCachedFetch = async (
     normalizedUrl: string,
@@ -20,7 +20,7 @@ const browserCachedFetch = async (
             const cacheData: cacheDataType = {
                 response: res.clone(),
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
-            }
+            };
             await BrowserMemory.set(cacheKey, cacheData);
             response = res;
         }
@@ -32,7 +32,7 @@ const browserCachedFetch = async (
             const cacheData: cacheDataType = {
                 response: res.clone(),
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
-            }
+            };
             await BrowserMemory.set(cacheKey, cacheData);
             response = res;
         }
@@ -54,15 +54,15 @@ const browserCachedFetch = async (
                 response: res,
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
             })).catch(err => {
-                console.warn("Background revalidation failed:", err);
+                console.warn('Background revalidation failed:', err);
             });
     }
 
     if (!response) {
-        throw new Error("No valid response available.");
+        throw new Error('No valid response available.');
     }
 
     return response;
-}
+};
 
 export default browserCachedFetch;

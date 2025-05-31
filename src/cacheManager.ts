@@ -15,7 +15,7 @@ export const cachedFetch = async (url: string, options: RequestInit, cacheOption
                 }
                 case 'browser': {
                     if (typeof window === 'undefined') {
-                        throw new Error("Browser adapter cannot be used in a Node.js environment.");
+                        throw new Error('Browser adapter cannot be used in a Node.js environment.');
                     }
                     //Import here
                     const { default: browserCachedFetch } = await import('./adapters/browser');
@@ -24,7 +24,7 @@ export const cachedFetch = async (url: string, options: RequestInit, cacheOption
                 }
                 case 'node': {
                     if (typeof window !== 'undefined') {
-                        throw new Error("Node adapter cannot be used in the browser.");
+                        throw new Error('Node adapter cannot be used in the browser.');
                     }
                     //Import here
                     const { default: nodeCachedFetch } = await import('./adapters/node');
@@ -45,4 +45,4 @@ export const cachedFetch = async (url: string, options: RequestInit, cacheOption
         response =  await fetch(url, options);
     }
     return response;
-}
+};

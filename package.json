@@ -10,7 +10,10 @@
   "scripts": {
     "build": "tsup && rollup -c rollup.config.js",
     "build:npm": "tsup",
-    "build:cdn": "rollup -c rollup.config.js"
+    "build:cdn": "rollup -c rollup.config.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "keywords": [
     "cache"
@@ -19,8 +22,15 @@
   "license": "MIT",
   "description": "A simple caching layer for fetch requests — supports memory, browser (localStorage), and Node.js (filesystem) adapters with smart strategies.",
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/node": "^22.15.18",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "prettier": "^3.5.3",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   },
@@ -28,6 +38,14 @@
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "typescript-eslint": "^8.32.1"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 80,
+    "tabWidth": 2
   }
 }

@@ -1,3 +1,3 @@
-export * from "./cacheManager"
+export * from './cacheManager';
 
-export * from "./types"
+export * from './types';

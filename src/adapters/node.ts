@@ -1,5 +1,5 @@
 import { cacheDataType, CacheProps } from '../types';
-import { getExpiryTimeCacheKey } from "../utils/common.util";
+import { getExpiryTimeCacheKey } from '../utils/common.util';
 import { FileMemory } from '../utils/cache.util';
 
 const nodeCachedFetch = async (
@@ -21,7 +21,7 @@ const nodeCachedFetch = async (
             const cacheData: cacheDataType = {
                 response: res.clone(),
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
-            }
+            };
             FileMemory.set(cacheKey, cacheData);
             response = res;
         }
@@ -33,7 +33,7 @@ const nodeCachedFetch = async (
             const cacheData: cacheDataType = {
                 response: res.clone(),
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
-            }
+            };
             FileMemory.set(cacheKey, cacheData);
             response = res;
         }
@@ -55,15 +55,15 @@ const nodeCachedFetch = async (
                 response: res,
                 expiredAt: getExpiryTimeCacheKey(cacheOptions?.revalidate)
             })).catch(err => {
-                console.warn("Background revalidation failed:", err);
+                console.warn('Background revalidation failed:', err);
             });
     }
 
     if (!response) {
-        throw new Error("No valid response available.");
+        throw new Error('No valid response available.');
     }
 
     return response;
-}
+};
 
 export default nodeCachedFetch;

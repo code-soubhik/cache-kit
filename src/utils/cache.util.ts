@@ -1,9 +1,13 @@
-import { cacheDataType } from "../types";
+import { cacheDataType, cacheFunctionStructure } from '../types';
 import fs from 'fs';
 import path from 'path';
+import { makeKey } from './common.util';
 
-export const BrowserMemory = {
-    set: async function (key: string, data: cacheDataType): Promise<void> {
+const Memory: Map<string, cacheDataType> = new Map();
+
+export const BrowserMemory: cacheFunctionStructure = {
+    set: async function (_key: string, data: cacheDataType): Promise<void> {
+        const key = makeKey(_key);
         const text = await data.response.clone().text();
         const resData = {
             responseBody: text,
@@ -14,7 +18,8 @@ export const BrowserMemory = {
         };
         window.localStorage.setItem(key, JSON.stringify(resData));
     },
-    get: function (key: string): cacheDataType | null {
+    get: function (_key: string): cacheDataType | null {
+        const key = makeKey(_key);
         const raw = localStorage.getItem(key);
         if (!raw) return null;
 
@@ -33,25 +38,71 @@ export const BrowserMemory = {
             return null;
         }
     },
-    has: function (key: string): boolean {
+    has: function (_key: string): boolean {
+        const key = makeKey(_key);
         return localStorage.getItem(key) !== null;
+    },
+    delete: function (_key: string): void {
+        const key = makeKey(_key);
+        localStorage.removeItem(key);
+    },
+    clear: function (): void {
+        const keys = Object.keys(localStorage);
+        for (const key of keys) {
+            if (key.startsWith('__CACHE_KIT__::')) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
+};
+
+export const cacheMemory: cacheFunctionStructure = {
+    set: function (key: string, data: cacheDataType): void {
+        Memory.set(key, data);
+    },
+    get: function (key: string): cacheDataType | null {
+        return Memory.get(key) || null;
+    },
+    has: function (key: string): boolean {
+        return Memory.has(key);
+    },
+    delete: function (key: string): void {
+        Memory.delete(key);
+    },
+    clear: function (): void {
+        Memory.clear();
     }
 }
 
-export const cacheMemory: Map<string, cacheDataType> = new Map();
-
-export const FileMemory = {
+export const FileMemory: cacheFunctionStructure = {
     set: function (key: string, data: cacheDataType): void {
-        const filepath = path.resolve("./cache", `${key}.json`);
+        const filepath = path.resolve('./cache', `${key}.json`);
         fs.writeFileSync(filepath, JSON.stringify(data));
     },
-    get: function (key: string):cacheDataType {
-        const filepath = path.resolve("./cache", `${key}.json`);
+    get: function (key: string): cacheDataType {
+        const filepath = path.resolve('./cache', `${key}.json`);
         const data = fs.readFileSync(filepath, 'utf8');
         return JSON.parse(data);
     },
     has: function (key: string): boolean {
         const files = fs.existsSync('./cache') ? fs.readdirSync('./cache') : [];
-        return files.includes(`${key}.json`)
+        return files.includes(`${key}.json`);
+    },
+    delete: function (key: string): void {
+        const filepath = path.resolve('./cache', `${key}.json`);
+        if (fs.existsSync(filepath)) {
+            fs.unlinkSync(filepath);
+        }
+    },
+    clear: function (): void {
+        const dir = path.resolve('./cache');
+        if (fs.existsSync(dir)) {
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+                if (file.endsWith('.json')) {
+                    fs.unlinkSync(path.join(dir, file));
+                }
+            }
+        }
     }
-}
+};
