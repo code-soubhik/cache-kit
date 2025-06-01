@@ -1,5 +1,5 @@
 import { cacheDataType, CacheProps } from '../types';
-import { BrowserMemory } from '../utils/cache.util';
+import { BrowserMemory } from '../utils/browser.util';
 import { getExpiryTimeCacheKey } from '../utils/common.util';
 
 const browserCachedFetch = async (

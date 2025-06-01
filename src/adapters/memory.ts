@@ -1,5 +1,5 @@
 import { cacheDataType, CacheProps } from '../types';
-import { cacheMemory } from '../utils/cache.util';
+import { cacheMemory } from '../utils/memory.util';
 import { getExpiryTimeCacheKey } from '../utils/common.util';
 
 const memoryCachedFetch = async (

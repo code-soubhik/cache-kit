@@ -2,6 +2,7 @@ export interface CacheProps {
   revalidate?: number; // seconds
   strategy: 'cache-first' | 'network-first' | 'stale-while-revalidate';
   adapter: 'memory' | 'browser' | 'node';
+  folderName?: string; // for node adapter 
 };
 
 export interface cacheDataType {
